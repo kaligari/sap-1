@@ -1,34 +1,32 @@
 import { eventBus } from "./eventBus"
+import { Register } from "./Register"
 
-export class ProgramCounter {
+export class ProgramCounter extends Register {
     enableOut = false
-    enableIn = true
-    #maxValue = 16
-    #valueArray
-    #dataView
+    enable = false
+    #maxValue
+    // TODO
+    // Counter out
+    // Jump
+
 
     constructor(maxValue = 16) {
+        super()
         this.#maxValue = maxValue
-        this.#valueArray = new Uint8Array(1)
-        this.#dataView = new DataView(this.#valueArray.buffer)
         eventBus.subscribe('clock-tick-on', this.onTick)
     }
-
-    get value() {
-        return this.#dataView.getInt8(0)
-    }
-
-    set value(value) {
-        this.#dataView.setInt8(0, value)
-    }
-
+    
     onTick = () => {
-        if(this.enableIn) {
-            this.value = this.value + 1
-            if(this.value >= this.#maxValue) {
-                this.value = 0
-            }
-            console.log('program counter', this.#dataView.getInt8(0))
+        if(this.enable) {
+            this.onEnable()
         }        
+    }
+
+    onEnable() {
+        this.value = this.value + 1
+        if(this.value >= this.#maxValue) {
+            this.value = 0
+        }
+        console.log('program counter', this.value)
     }
 }

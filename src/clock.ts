@@ -20,7 +20,7 @@ export class Clock extends EventTarget {
           eventBus.publish('clock-tick-on')
         //   event = new CustomEvent('clock-tick-on')
         } else {
-          console.log('tick-off')
+          // console.log('tick-off')
           eventBus.publish('clock-tick-off')
         //   event = new CustomEvent('clock-tick-off')
         }

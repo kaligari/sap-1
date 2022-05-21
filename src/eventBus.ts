@@ -1,14 +1,18 @@
+export interface IPayload {
+    value: number
+}
+
 interface ISubscription {
     eventType: string
     id: number
-    callback: () => void
+    callback: (payload?: IPayload) => void
 }
 
 class EventBus {
     subscriptions: ISubscription[] = []
     getNextUniqueId = this.getIdGenerator()
     
-    subscribe(eventType: string, callback: () => void) {
+    subscribe(eventType: string, callback: (payload?: IPayload) => void) {
         const id = this.getNextUniqueId()
     
         this.subscriptions.push({
@@ -25,10 +29,10 @@ class EventBus {
         }
     }
     
-    publish(eventType: string) {
+    publish(eventType: string, payload?: IPayload) {
         this.subscriptions
             .filter(item => item.eventType === eventType)
-            .forEach(item => item.callback())
+            .forEach(item => item.callback(payload))
     }
     
     getIdGenerator() {
