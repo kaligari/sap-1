@@ -55,7 +55,6 @@ const instructions: { [key: string]: number; } = {
 }
 
 const { getValue: getBinaryValue, setValue: setBinaryValue } = useRegister()
-let instructionRegister = 0
 
 const { setClockHalt } = useClock()
 const { setMemoryIn } = useMemoryAddress()
@@ -98,10 +97,5 @@ const onTickOff = () => {
 eventBus.subscribe(EEvents.CLOCK_TICK_OFF, onTickOff)
 
 export const useInstructionDecoder = () => {
-    const setValue = (payload: number) => {
-        instructionRegister = payload
-    }
-    return {
-        setValue
-    }
+
 }
