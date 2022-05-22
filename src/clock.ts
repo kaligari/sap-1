@@ -1,20 +1,22 @@
 import { eventBus } from "./eventBus"
 
-export class Clock extends EventTarget {
+class Clock extends EventTarget {
     #frequency = 100
+    #interval = 1
   
-    constructor(hz: number) {
+    constructor() {
       super()
+    }
+
+    startTicking(hz: number) {
+      clearInterval(this.#interval)
       if(hz < 0) {
         throw Error('Invalid clock frequency')
       }
       this.#frequency = hz
-    }
-  
-    startTicking() {
       let tickOn = true
     //   let event
-      setInterval(() => {
+      this.#interval = setInterval(() => {
         if(tickOn) {
           console.log('tick-on')
           eventBus.publish('clock-tick-on')
@@ -31,3 +33,4 @@ export class Clock extends EventTarget {
     
   }
   
+export const clock = new Clock()

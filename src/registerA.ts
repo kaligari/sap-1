@@ -1,7 +1,7 @@
 import { eventBus, IPayload } from "./eventBus"
 import { Register } from "./Register"
 
-export class RegisterA extends Register {
+class RegisterA extends Register {
     enableOut = false
     enableIn = false
     #valueFromBus: number|null = null
@@ -26,3 +26,5 @@ export class RegisterA extends Register {
     }
 
 }
+
+export const registerA = new RegisterA()

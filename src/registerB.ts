@@ -1,7 +1,7 @@
 import { eventBus } from "./eventBus"
 import { Register } from "./Register"
 
-export class RegisterB extends Register {
+class RegisterB extends Register {
     enableOut = false
     enableIn = false
 
@@ -15,3 +15,5 @@ export class RegisterB extends Register {
         }        
     }
 }
+
+export const registerB = new RegisterB()

@@ -1,7 +1,7 @@
 import { eventBus } from "./eventBus"
 import { Register } from "./Register"
 
-export class ProgramCounter extends Register {
+class ProgramCounter extends Register {
     enableOut = false
     enable = false
     #maxValue
@@ -30,3 +30,5 @@ export class ProgramCounter extends Register {
         console.log('program counter', this.value)
     }
 }
+
+export const programCounter = new ProgramCounter()

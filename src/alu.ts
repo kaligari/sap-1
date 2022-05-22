@@ -1,7 +1,9 @@
 import { eventBus } from "./eventBus";
 import { Register } from "./Register";
+import { registerA } from "./registerA";
+import { registerB } from "./registerB";
 
-export class ALU extends Register {
+class ALU extends Register {
     registerA: Register
     registerB: Register
     #sumOut = false
@@ -31,3 +33,5 @@ export class ALU extends Register {
         }
     }
 }
+
+export const alu = new ALU(registerA, registerB)

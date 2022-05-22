@@ -1,7 +1,8 @@
+import { alu } from "./alu";
 import { eventBus, IPayload } from "./eventBus";
 import { Register } from "./Register";
 
-export class Bus extends Register {
+class Bus extends Register {
     alu: Register
     
     constructor(alu: Register) {
@@ -18,3 +19,5 @@ export class Bus extends Register {
         }
     }
 }
+
+export const bus = new Bus(alu)
