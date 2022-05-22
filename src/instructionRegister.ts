@@ -13,8 +13,6 @@ const onTick = () => {
     if(enableIn) {
         setTimeout(() => {
             setBinaryValue(valueFromBus())
-            eventBus.publish(EEvents.INSTRUCTION_REGISTER_CHANGE, { value: getBinaryValue() })
-            // setInstructionDecoderValue(getBinaryValue())
             console.log('II', getBinaryValue().toBinaryFormat(8));
         })
     }

@@ -18,7 +18,6 @@ const onTick = () => {
         })
     }
     if(enableOut) {
-        // eventBus.publish(EEvents.REGISTER_A_TO_BUS, { value: getBinaryValue() })
         setValueToBus(getBinaryValue())
         console.log('AO', getBinaryValue().toBinaryFormat())
     }

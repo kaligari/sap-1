@@ -60,22 +60,15 @@ let instructionRegister = 0
 const { setClockHalt } = useClock()
 const { setMemoryIn } = useMemoryAddress()
 const { setRamOut } = useRAM()
-const { setInstructionRegisterOut, setInstructionRegisterIn } = useInstructionRegister()
+const { setInstructionRegisterOut, setInstructionRegisterIn, getValue: getInstructionRegisterValue } = useInstructionRegister()
 const { setSumOut } = useAlu()
 const { setRegisterAIn, setRegisterAOut } = useRegisterA()
 const { setRegisterBIn } = useRegisterB()
 const { setProgramCounterEnable, setProgramCounterOut } = useProgramCounter()
 const { setOutputRegisterIn } = useOutputRegister()
 
-const onInstructionRegisterChange = (payload?: IPayload) => {
-    // TO DO
-    if(payload) {
-        instructionRegister = payload.value >> 4 || 0
-    }
-}
-
 const onTickOff = () => {
-    
+    const instructionRegister = getInstructionRegisterValue() >> 4
     const microinstruction = `${instructionRegister.toString(2).padStart(4, '0')}${getBinaryValue().toString(2).padStart(4, '0')}`
     
     const instructionSet: number = instructions[microinstruction] || 0
@@ -103,7 +96,6 @@ const onTickOff = () => {
 }
 
 eventBus.subscribe(EEvents.CLOCK_TICK_OFF, onTickOff)
-eventBus.subscribe(EEvents.INSTRUCTION_REGISTER_CHANGE, onInstructionRegisterChange)
 
 export const useInstructionDecoder = () => {
     const setValue = (payload: number) => {

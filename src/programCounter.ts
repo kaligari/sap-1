@@ -18,7 +18,6 @@ const onTick = () => {
         console.log('CE', getValue().toBinaryFormat());
     }
     if(enableOut) {
-        // eventBus.publish(EEvents.PROGRAM_COUNTER_TO_BUS, { value: getValue() })
         setValueToBus(getValue())
         console.log('CO', getValue().toBinaryFormat());
     }

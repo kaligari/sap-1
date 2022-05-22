@@ -9,7 +9,7 @@ let enableIn = false
 const { value: valueFromBus } = useBus()
 
 const onTick = () => {
-    if(enableIn && valueFromBus !== null) {
+    if(enableIn) {
         setBinaryValue(valueFromBus())
         console.log('--- OI RESULT ---: ', getBinaryValue()); 
     }
