@@ -1,30 +1,29 @@
-import { eventBus, IPayload } from "./eventBus"
+import { useBus } from "./bus"
+import { eventBus } from "./eventBus"
 import { EEvents } from "./events"
 import { useRegister } from "./useRegister"
 
 const { getValue: getBinaryValue, setValue: setBinaryValue } = useRegister()
 let enableOut = false
 let enableIn = false
-let valueFromBus: number|null = 0
 
-const onBusUpdate = (payload?: IPayload) => {
-    if(payload?.value !== undefined) {
-        valueFromBus = payload?.value
-    }
-    
-}
+const { value: valueFromBus } = useBus()
 
 const onTick = () => {
-    if(enableIn && valueFromBus !== null) {
-        setBinaryValue(valueFromBus)
-        eventBus.publish(EEvents.INSTRUCTION_REGISTER_CHANGE, { value: getBinaryValue() })
-        // console.log('instruction register', getBinaryValue().toString(2).padStart(4, '0'));
+    if(enableIn) {
+        setTimeout(() => {
+            setBinaryValue(valueFromBus())
+            eventBus.publish(EEvents.INSTRUCTION_REGISTER_CHANGE, { value: getBinaryValue() })
+            console.log('II', getBinaryValue().toBinaryFormat(8));
+        })
     }
-    valueFromBus = null
+    if(enableOut) {
+        eventBus.publish(EEvents.INSTRUCTION_REGISTER_TO_BUS, { value: (getBinaryValue() & 0b1111) })
+        console.log('IO', (getBinaryValue() & 0b1111).toBinaryFormat())
+    }
 }
 
 eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
-eventBus.subscribe(EEvents.BUS_UPDATE, onBusUpdate)
 
 export const useInstructionRegister = () => {
 

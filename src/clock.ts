@@ -17,9 +17,11 @@ export const useClock = () => {
       interval = setInterval(() => {
         if(halt) {
           clearInterval(interval)
+          console.log('HLT')
+          
         }
         if(tickOn) {
-          console.log('tick-on')
+          // console.log('tick-on')
           eventBus.publish(EEvents.CLOCK_TICK_ON)
         } else {
           // console.log('tick-off')

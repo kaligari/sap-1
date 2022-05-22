@@ -1,3 +1,4 @@
+import "./number.extensions"
 import { useBus } from "./bus"
 import { useAlu } from "./alu"
 import { useClock } from "./clock"
@@ -10,6 +11,7 @@ import { useRegisterA } from "./registerA"
 import { useRegisterB } from "./registerB"
 
 console.clear()
+
 const { startTicking } = useClock()
 // const { setProgramCounterEnable } = useProgramCounter()
 
@@ -45,4 +47,4 @@ useRegisterB()
 
 // alu.sumOut = true
 
-startTicking(0.5)
+startTicking(1)

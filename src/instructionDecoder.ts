@@ -32,22 +32,25 @@ const IR = 0b0000000000000001
 const instructions: { [key: string]: number; } = {
     '00000000': MI | CO,
     '00000001': RO | II | CE,
-    '00000010': IO | MI,
-    '00000011': RO | AI,
 
     '00010000': MI | CO,
     '00010001': RO | II | CE,
     '00010010': IO | MI,
-    '00010011': RO | BI,
-    '00010100': EO | AI,
+    '00010011': RO | AI,
 
     '00100000': MI | CO,
     '00100001': RO | II | CE,
-    '00100010': AO | OI,
+    '00100010': IO | MI,
+    '00100011': RO | BI,
+    '00100100': EO | AI,
 
-    '00110000': MI | CO,
-    '00110001': RO | II | CE,
-    '00110010': HLT,
+    '11100000': MI | CO,
+    '11100001': RO | II | CE,
+    '11100010': AO | OI,
+
+    '11110000': MI | CO,
+    '11110001': RO | II | CE,
+    '11110010': HLT,
     
 }
 
@@ -65,9 +68,9 @@ const { setProgramCounterEnable, setProgramCounterOut } = useProgramCounter()
 const { setOutputRegisterIn } = useOutputRegister()
 
 const onInstructionRegisterChange = (payload?: IPayload) => {
-    
-    instructionRegister = payload?.value || 0
-    // console.log('XXX', instructionRegister, (instructionRegister >> 4).toString(2).padStart(4, '0'));
+    if(payload) {
+        instructionRegister = payload.value >> 4 || 0
+    }
 }
 
 const onTickOff = () => {
@@ -76,7 +79,7 @@ const onTickOff = () => {
     
     const instructionSet: number = instructions[microinstruction] || 0
 
-    console.log('microinstruction', microinstruction, 'instructionSet',  instructionSet.toString(2).padStart(16, '0'));
+    console.log(microinstruction, ':',  instructionSet.toBinaryFormat(16));
      
     setClockHalt(!!(HLT & instructionSet))
     setMemoryIn(!!(MI & instructionSet))

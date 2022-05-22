@@ -1,4 +1,4 @@
-import { eventBus, IPayload } from "./eventBus"
+import { eventBus } from "./eventBus"
 import { EEvents } from "./events"
 import { useRegister } from "./useRegister"
 
@@ -9,14 +9,15 @@ let maxValue = 16
 
 const onTick = () => {
     if(enable) {
-       console.log('program counter', getValue().toString(2).padStart(4, '0'))
         setValue(getValue() + 1)
         if(getValue() >= maxValue) {
             setValue(0)
         }
+        console.log('CE', getValue().toBinaryFormat());
     }
     if(enableOut) {
-        eventBus.publish(EEvents.PROGRAM_COUNTER_CHANGE, { value: getValue() })
+        eventBus.publish(EEvents.PROGRAM_COUNTER_TO_BUS, { value: getValue() })
+        console.log('CO', getValue().toBinaryFormat());
     }
 }
 

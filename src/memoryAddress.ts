@@ -1,29 +1,24 @@
-import { eventBus, IPayload } from "./eventBus"
+import { eventBus } from "./eventBus"
 import { EEvents } from "./events"
 import { useRegister } from "./useRegister"
+import { useBus } from "./bus"
 
 const { getValue: getBinaryValue, setValue: setBinaryValue } = useRegister()
-let enableOut = false
 let memoryIn = false
-let valueFromBus: number|null = 0
 
-const onBusUpdate = (payload?: IPayload) => {
-    if(payload?.value !== undefined) {
-        valueFromBus = payload?.value
+const { value: valueFromBus } = useBus()
+
+const onTick = () => {
+    if(memoryIn) {
+        setTimeout(() => {
+            setBinaryValue(valueFromBus())
+            eventBus.publish(EEvents.MEMORY_ADDRESS_CHANGE, { value: getBinaryValue() })
+            console.log('MI', getBinaryValue().toBinaryFormat(4)); 
+        })
     }
 }
 
-const onTick = () => {
-    if(memoryIn && valueFromBus !== null) {
-        setBinaryValue(valueFromBus)
-        eventBus.publish(EEvents.MEMORY_ADDRESS_CHANGE, { value: getBinaryValue() })
-        console.log('memory address', getBinaryValue().toString(2).padStart(4, '0')); 
-    }      
-    valueFromBus = null
-}
-
 eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
-eventBus.subscribe(EEvents.BUS_UPDATE, onBusUpdate)
 
 export const useMemoryAddress = () => {
 

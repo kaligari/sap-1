@@ -1,25 +1,21 @@
-import { eventBus, IPayload } from "./eventBus"
+import { useBus } from "./bus"
+import { eventBus } from "./eventBus"
 import { EEvents } from "./events"
 import { useRegister } from "./useRegister"
 
 const { getValue: getBinaryValue, setValue: setBinaryValue } = useRegister()
 let enableIn = false
-let valueFromBus: number|null = null
 
-const onBusUpdate = (payload?: IPayload) => {
-    valueFromBus = payload?.value || null
-}
+const { value: valueFromBus } = useBus()
 
 const onTick = () => {
     if(enableIn && valueFromBus !== null) {
-        setBinaryValue(valueFromBus)
-        console.log('output register', getBinaryValue().toString(2).padStart(4, '0'));  
-    }      
-    valueFromBus = null
+        setBinaryValue(valueFromBus())
+        console.log('--- OI RESULT ---: ', getBinaryValue()); 
+    }
 }
 
 eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
-eventBus.subscribe(EEvents.BUS_UPDATE, onBusUpdate)
 
 export const useOutputRegister = () => {
 

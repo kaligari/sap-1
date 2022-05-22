@@ -11,14 +11,19 @@ let sumOut = false
 
 const sumRegisters = () => {
     setValue(getRegisterAValue() + getRegisterBValue())
+}
+
+const onTick = () => {
     if(sumOut) {            
-        eventBus.publish(EEvents.ALU_SUM_OUT, { value: getValue() })
+        eventBus.publish(EEvents.ALU_SUM_OUT_TO_BUS, { value: getValue() })
+        console.log('EO', getValue().toBinaryFormat(8));
     }
 }
 
 sumRegisters()
 eventBus.subscribe(EEvents.REGISTER_A_CHANGE, sumRegisters)
 eventBus.subscribe(EEvents.REGISTER_B_CHANGE, sumRegisters)
+eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
 
 export const useAlu = () => {
 

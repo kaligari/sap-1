@@ -9,17 +9,24 @@ let ramOut = false
 setValue(0b00011110, 0b0000)
 setValue(0b00101111, 0b0001)
 setValue(0b11100000, 0b0010)
+setValue(0b11110000, 0b0011)
 
 setValue(0b00011100, 0b1110)
 setValue(0b00001110, 0b1111)
 
 const onMemoryAddressChange = (payload?: IPayload) => {
     value = getValue(payload?.value)
-    eventBus.publish(EEvents.RAM_CONTENT_CHANGE, { value })
-    console.log('RAM content', value.toString(2).padStart(8, '0'));
+}
+
+const onTick = () => {
+    if(ramOut) {
+        eventBus.publish(EEvents.RAM_CONTENT_TO_BUS, { value })
+        console.log('RO', value.toBinaryFormat())
+    }
 }
 
 eventBus.subscribe(EEvents.MEMORY_ADDRESS_CHANGE, onMemoryAddressChange)
+eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
 
 export const useRAM = () => {
     const setRamOut = (state: boolean) => {
