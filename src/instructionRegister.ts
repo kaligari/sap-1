@@ -7,19 +7,21 @@ const { getValue: getBinaryValue, setValue: setBinaryValue } = useRegister()
 let enableOut = false
 let enableIn = false
 
-const { value: valueFromBus } = useBus()
+const { value: valueFromBus, setValue } = useBus()
 
 const onTick = () => {
     if(enableIn) {
         setTimeout(() => {
             setBinaryValue(valueFromBus())
             eventBus.publish(EEvents.INSTRUCTION_REGISTER_CHANGE, { value: getBinaryValue() })
+            // setInstructionDecoderValue(getBinaryValue())
             console.log('II', getBinaryValue().toBinaryFormat(8));
         })
     }
     if(enableOut) {
-        eventBus.publish(EEvents.INSTRUCTION_REGISTER_TO_BUS, { value: (getBinaryValue() & 0b1111) })
-        console.log('IO', (getBinaryValue() & 0b1111).toBinaryFormat())
+        const shifted = getBinaryValue() & 0b1111
+        setValue(shifted)
+        console.log('IO', shifted.toBinaryFormat())
     }
 }
 

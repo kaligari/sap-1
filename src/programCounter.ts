@@ -1,8 +1,10 @@
+import { useBus } from "./bus"
 import { eventBus } from "./eventBus"
 import { EEvents } from "./events"
 import { useRegister } from "./useRegister"
 
 const { getValue, setValue } = useRegister()
+const { setValue: setValueToBus } = useBus()
 let enableOut = false
 let enable = false
 let maxValue = 16
@@ -16,7 +18,8 @@ const onTick = () => {
         console.log('CE', getValue().toBinaryFormat());
     }
     if(enableOut) {
-        eventBus.publish(EEvents.PROGRAM_COUNTER_TO_BUS, { value: getValue() })
+        // eventBus.publish(EEvents.PROGRAM_COUNTER_TO_BUS, { value: getValue() })
+        setValueToBus(getValue())
         console.log('CO', getValue().toBinaryFormat());
     }
 }

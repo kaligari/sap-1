@@ -4,6 +4,7 @@ import { EEvents } from "./events"
 import { useRegister } from "./useRegister"
 
 const { getValue: getBinaryValue, setValue: setBinaryValue } = useRegister()
+const { setValue: setValueToBus } = useBus()
 let enableOut = false
 let enableIn = false
 
@@ -13,12 +14,12 @@ const onTick = () => {
     if(enableIn) {
         setTimeout(() => {
             setBinaryValue(valueFromBus())
-            eventBus.publish(EEvents.REGISTER_A_CHANGE, { value: getBinaryValue() })
             console.log('AI', getBinaryValue().toBinaryFormat())
         })
     }
     if(enableOut) {
-        eventBus.publish(EEvents.REGISTER_A_TO_BUS, { value: getBinaryValue() })
+        // eventBus.publish(EEvents.REGISTER_A_TO_BUS, { value: getBinaryValue() })
+        setValueToBus(getBinaryValue())
         console.log('AO', getBinaryValue().toBinaryFormat())
     }
 }

@@ -12,7 +12,6 @@ const onTick = () => {
     if(enableIn) {
         setTimeout(() => {
             setBinaryValue(valueFromBus())
-            eventBus.publish(EEvents.REGISTER_B_CHANGE, { value: getBinaryValue() })
             console.log('BI', getBinaryValue().toBinaryFormat())
         })
     }      

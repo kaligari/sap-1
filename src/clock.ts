@@ -14,10 +14,12 @@ export const useClock = () => {
       }
       frequency = hz
       let tickOn = true
+      console.time()
       interval = setInterval(() => {
         if(halt) {
           clearInterval(interval)
           console.log('HLT')
+          console.timeEnd()
           
         }
         if(tickOn) {

@@ -68,6 +68,7 @@ const { setProgramCounterEnable, setProgramCounterOut } = useProgramCounter()
 const { setOutputRegisterIn } = useOutputRegister()
 
 const onInstructionRegisterChange = (payload?: IPayload) => {
+    // TO DO
     if(payload) {
         instructionRegister = payload.value >> 4 || 0
     }
@@ -105,5 +106,10 @@ eventBus.subscribe(EEvents.CLOCK_TICK_OFF, onTickOff)
 eventBus.subscribe(EEvents.INSTRUCTION_REGISTER_CHANGE, onInstructionRegisterChange)
 
 export const useInstructionDecoder = () => {
-
+    const setValue = (payload: number) => {
+        instructionRegister = payload
+    }
+    return {
+        setValue
+    }
 }

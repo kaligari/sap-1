@@ -1,8 +1,10 @@
+import { useBus } from "./bus"
 import { eventBus, IPayload } from "./eventBus"
 import { EEvents } from "./events"
 import { useRegister } from "./useRegister"
 
 const { getValue, setValue } = useRegister(16)
+const { setValue: setValueToBus } = useBus()
 let value = 0
 let ramOut = false
 
@@ -20,7 +22,7 @@ const onMemoryAddressChange = (payload?: IPayload) => {
 
 const onTick = () => {
     if(ramOut) {
-        eventBus.publish(EEvents.RAM_CONTENT_TO_BUS, { value })
+        setValueToBus(value)
         console.log('RO', value.toBinaryFormat())
     }
 }
