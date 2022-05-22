@@ -1,4 +1,5 @@
 import { eventBus } from "./eventBus"
+import { EEvents } from "./evets"
 import { Register } from "./Register"
 
 class RegisterB extends Register {
@@ -7,7 +8,7 @@ class RegisterB extends Register {
 
     constructor() {
         super()
-        eventBus.subscribe('clock-tick-on', this.onTick)
+        eventBus.subscribe(EEvents.CLOCK_TICK_ON, this.onTick)
     }
     
     onTick = () => {

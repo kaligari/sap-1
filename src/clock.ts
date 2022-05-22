@@ -1,4 +1,5 @@
 import { eventBus } from "./eventBus"
+import { EEvents } from "./evets"
 
 class Clock extends EventTarget {
     #frequency = 100
@@ -19,11 +20,11 @@ class Clock extends EventTarget {
       this.#interval = setInterval(() => {
         if(tickOn) {
           console.log('tick-on')
-          eventBus.publish('clock-tick-on')
+          eventBus.publish(EEvents.CLOCK_TICK_ON)
         //   event = new CustomEvent('clock-tick-on')
         } else {
           // console.log('tick-off')
-          eventBus.publish('clock-tick-off')
+          eventBus.publish(EEvents.CLOCK_TICK_OFF)
         //   event = new CustomEvent('clock-tick-off')
         }
         // this.dispatchEvent(event)

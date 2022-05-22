@@ -1,20 +1,17 @@
 import { eventBus } from "./eventBus";
+import { EEvents } from "./evets";
 import { Register } from "./Register";
 import { registerA } from "./registerA";
 import { registerB } from "./registerB";
 
 class ALU extends Register {
-    registerA: Register
-    registerB: Register
     #sumOut = false
 
-    constructor(registerA: Register, registerB: Register) {
+    constructor() {
         super()
-        this.registerA = registerA
-        this.registerB = registerB
         this.sumRegisters()
-        eventBus.subscribe('register-a-change', this.sumRegisters)
-        eventBus.subscribe('register-b-change', this.sumRegisters)
+        eventBus.subscribe(EEvents.REGISTER_A_CHANGE, this.sumRegisters)
+        eventBus.subscribe(EEvents.REGISTER_B_CHANGE, this.sumRegisters)
     }
 
     get sumOut() {
@@ -27,11 +24,11 @@ class ALU extends Register {
     }
     
     sumRegisters = () => {
-        this.value = this.registerA.value + this.registerB.value
+        this.value = registerA.value + registerB.value
         if(this.#sumOut) {            
-            eventBus.publish('alu-sum-out', { value: this.value })
+            eventBus.publish(EEvents.ALUS_SUM_OUT, { value: this.value })
         }
     }
 }
 
-export const alu = new ALU(registerA, registerB)
+export const alu = new ALU()

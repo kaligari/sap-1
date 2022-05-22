@@ -1,4 +1,5 @@
 import { eventBus } from "./eventBus"
+import { EEvents } from "./evets"
 import { Register } from "./Register"
 
 class ProgramCounter extends Register {
@@ -13,7 +14,7 @@ class ProgramCounter extends Register {
     constructor(maxValue = 16) {
         super()
         this.#maxValue = maxValue
-        eventBus.subscribe('clock-tick-on', this.onTick)
+        eventBus.subscribe(EEvents.CLOCK_TICK_ON, this.onTick)
     }
     
     onTick = () => {
