@@ -8,5 +8,6 @@ export enum EEvents {
     REGISTER_B_CHANGE = 'register-b-change',
     PROGRAM_COUNTER_CHANGE = 'program-counter-change',
     MEMORY_ADDRESS_CHANGE = 'memory-address-change',
-    RAM_CONTENT_CHANGE = 'ram-content-change'
+    RAM_CONTENT_CHANGE = 'ram-content-change',
+    INSTRUCTION_REGISTER_CHANGE = 'instruction-register-change'
 }

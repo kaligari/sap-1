@@ -4,6 +4,7 @@ import { useRegister } from "./useRegister"
 
 const { getValue, setValue } = useRegister(16)
 let value = 0
+let ramOut = false
 
 setValue(0b00011110, 0b0000)
 setValue(0b00101111, 0b0001)
@@ -21,5 +22,11 @@ const onMemoryAddressChange = (payload?: IPayload) => {
 eventBus.subscribe(EEvents.MEMORY_ADDRESS_CHANGE, onMemoryAddressChange)
 
 export const useRAM = () => {
+    const setRamOut = (state: boolean) => {
+        ramOut = state
+    }
 
+    return {
+        setRamOut
+    }
 }
