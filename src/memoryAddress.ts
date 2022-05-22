@@ -12,7 +12,6 @@ const onTick = () => {
     if(memoryIn) {
         setTimeout(() => {
             setBinaryValue(valueFromBus())
-            eventBus.publish(EEvents.MEMORY_ADDRESS_CHANGE, { value: getBinaryValue() })
             console.log('MI', getBinaryValue().toBinaryFormat(4)); 
         })
     }
