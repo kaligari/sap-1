@@ -10,7 +10,8 @@ const onBusUpdate = (payload?: IPayload) => {
     }
 }
 
-eventBus.subscribe(EEvents.ALUS_SUM_OUT, onBusUpdate)
+eventBus.subscribe(EEvents.ALU_SUM_OUT, onBusUpdate)
+eventBus.subscribe(EEvents.PROGRAM_COUNTER_CHANGE, onBusUpdate)
 
 export const useBus = () => {
     

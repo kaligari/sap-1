@@ -12,7 +12,7 @@ let sumOut = false
 const sumRegisters = () => {
     setValue(getRegisterAValue() + getRegisterBValue())
     if(sumOut) {            
-        eventBus.publish(EEvents.ALUS_SUM_OUT, { value: getValue() })
+        eventBus.publish(EEvents.ALU_SUM_OUT, { value: getValue() })
     }
 }
 

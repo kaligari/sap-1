@@ -15,18 +15,19 @@ const onTick = () => {
     if(enableIn && valueFromBus !== null) {
         setBinaryValue(valueFromBus)
         valueFromBus = null
-        eventBus.publish(EEvents.REGISTER_A_CHANGE, { value: getBinaryValue() })
-        console.log('register a', getBinaryValue().toString(2).padStart(4, '0'))
-    }
+        eventBus.publish(EEvents.MEMORY_ADDRESS_CHANGE, { value: getBinaryValue() })
+        console.log('memory address', getBinaryValue().toString(2).padStart(4, '0'));
+        
+    }      
 }
 
 eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
 eventBus.subscribe(EEvents.BUS_UPDATE, onBusUpdate)
 
-export const useRegisterA = () => {
+export const useMemoryAddress = () => {
 
     const setValue = (value: number) => {
-        valueFromBus = value
+        setBinaryValue(value)
     }
 
     const getValue = (): number => {
@@ -36,7 +37,7 @@ export const useRegisterA = () => {
     const setEnableIn = (state: boolean) => {
         enableIn = state
     }
-    
+
     return {
         setValue,
         getValue,
