@@ -14,10 +14,10 @@ const onBusUpdate = (payload?: IPayload) => {
 const onTick = () => {
     if(enableIn && valueFromBus !== null) {
         setBinaryValue(valueFromBus)
-        valueFromBus = null
         eventBus.publish(EEvents.REGISTER_A_CHANGE, { value: getBinaryValue() })
         // console.log('register a', getBinaryValue().toString(2).padStart(4, '0'))
     }
+    valueFromBus = null
 }
 
 eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)

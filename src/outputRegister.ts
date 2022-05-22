@@ -3,7 +3,6 @@ import { EEvents } from "./events"
 import { useRegister } from "./useRegister"
 
 const { getValue: getBinaryValue, setValue: setBinaryValue } = useRegister()
-let enableOut = false
 let enableIn = false
 let valueFromBus: number|null = null
 
@@ -14,8 +13,7 @@ const onBusUpdate = (payload?: IPayload) => {
 const onTick = () => {
     if(enableIn && valueFromBus !== null) {
         setBinaryValue(valueFromBus)
-        eventBus.publish(EEvents.REGISTER_B_CHANGE, { value: getBinaryValue() })
-        // console.log('register b', getBinaryValue().toString(2).padStart(4, '0'))
+        console.log('output register', getBinaryValue().toString(2).padStart(4, '0'));  
     }      
     valueFromBus = null
 }
@@ -23,7 +21,7 @@ const onTick = () => {
 eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
 eventBus.subscribe(EEvents.BUS_UPDATE, onBusUpdate)
 
-export const useRegisterB = () => {
+export const useOutputRegister = () => {
 
     const setValue = (value: number) => {
         setBinaryValue(value)
@@ -33,18 +31,13 @@ export const useRegisterB = () => {
         return getBinaryValue()
     }
 
-    const setRegisterBIn = (state: boolean) => {
+    const setOutputRegisterIn = (state: boolean) => {
         enableIn = state
-    }
-
-    const setRegisterBOut = (state: boolean) => {
-        enableOut = state
     }
 
     return {
         setValue,
         getValue,
-        setRegisterBIn,
-        setRegisterBOut
+        setOutputRegisterIn
     }
 }

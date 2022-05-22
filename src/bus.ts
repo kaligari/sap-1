@@ -4,7 +4,7 @@ import { EEvents } from "./events";
 let value = 0
 
 const onBusUpdate = (payload?: IPayload) => {
-    if(payload?.value) {
+    if(payload?.value !== undefined) {
         value = payload?.value
         eventBus.publish(EEvents.BUS_UPDATE, { value: value })
     }

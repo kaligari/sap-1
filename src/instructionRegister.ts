@@ -5,20 +5,22 @@ import { useRegister } from "./useRegister"
 const { getValue: getBinaryValue, setValue: setBinaryValue } = useRegister()
 let enableOut = false
 let enableIn = false
-let valueFromBus: number|null = null
+let valueFromBus: number|null = 0
 
 const onBusUpdate = (payload?: IPayload) => {
-    valueFromBus = payload?.value || null
+    if(payload?.value !== undefined) {
+        valueFromBus = payload?.value
+    }
+    
 }
 
 const onTick = () => {
     if(enableIn && valueFromBus !== null) {
         setBinaryValue(valueFromBus)
-        valueFromBus = null
         eventBus.publish(EEvents.INSTRUCTION_REGISTER_CHANGE, { value: getBinaryValue() })
         // console.log('instruction register', getBinaryValue().toString(2).padStart(4, '0'));
-        
-    }      
+    }
+    valueFromBus = null
 }
 
 eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
