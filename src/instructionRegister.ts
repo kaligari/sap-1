@@ -24,7 +24,7 @@ const onTick = () => {
 eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
 eventBus.subscribe(EEvents.BUS_UPDATE, onBusUpdate)
 
-export const useRegistuseInstructionRegister = () => {
+export const useInstructionRegister = () => {
 
     const setValue = (value: number) => {
         setBinaryValue(value)
@@ -34,18 +34,18 @@ export const useRegistuseInstructionRegister = () => {
         return getBinaryValue()
     }
 
-    const setEnableIn = (state: boolean) => {
+    const setInstructionRegisterIn = (state: boolean) => {
         enableIn = state
     }
 
-    const setEnableOut = (state: boolean) => {
+    const setInstructionRegisterOut = (state: boolean) => {
         enableOut = state
     }
 
     return {
         setValue,
         getValue,
-        setEnableIn,
-        setEnableOut
+        setInstructionRegisterIn,
+        setInstructionRegisterOut
     }
 }

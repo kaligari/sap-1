@@ -4,7 +4,7 @@ import { useRegister } from "./useRegister"
 
 const { getValue: getBinaryValue, setValue: setBinaryValue } = useRegister()
 let enableOut = false
-let enableIn = false
+let memoryIn = false
 let valueFromBus: number|null = null
 
 const onBusUpdate = (payload?: IPayload) => {
@@ -12,7 +12,7 @@ const onBusUpdate = (payload?: IPayload) => {
 }
 
 const onTick = () => {
-    if(enableIn && valueFromBus !== null) {
+    if(memoryIn && valueFromBus !== null) {
         setBinaryValue(valueFromBus)
         valueFromBus = null
         eventBus.publish(EEvents.MEMORY_ADDRESS_CHANGE, { value: getBinaryValue() })
@@ -34,13 +34,13 @@ export const useMemoryAddress = () => {
         return getBinaryValue()
     }
 
-    const setEnableIn = (state: boolean) => {
-        enableIn = state
+    const setMemoryIn = (state: boolean) => {
+        memoryIn = state
     }
 
     return {
         setValue,
         getValue,
-        setEnableIn
+        setMemoryIn
     }
 }

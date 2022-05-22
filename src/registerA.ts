@@ -16,7 +16,7 @@ const onTick = () => {
         setBinaryValue(valueFromBus)
         valueFromBus = null
         eventBus.publish(EEvents.REGISTER_A_CHANGE, { value: getBinaryValue() })
-        console.log('register a', getBinaryValue().toString(2).padStart(4, '0'))
+        // console.log('register a', getBinaryValue().toString(2).padStart(4, '0'))
     }
 }
 
@@ -33,13 +33,18 @@ export const useRegisterA = () => {
         return getBinaryValue()
     }
 
-    const setEnableIn = (state: boolean) => {
+    const setRegisterAIn = (state: boolean) => {
         enableIn = state
+    }
+
+    const setRegisterAOut = (state: boolean) => {
+        enableOut = state
     }
     
     return {
         setValue,
         getValue,
-        setEnableIn
+        setRegisterAIn,
+        setRegisterAOut
     }
 }

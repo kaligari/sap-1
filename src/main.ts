@@ -2,7 +2,7 @@ import { useBus } from "./bus"
 // import { useAlu } from "./alu"
 import { useClock } from "./clock"
 import { useInstructionDecoder } from "./instructionDecoder"
-import { useRegistuseInstructionRegister } from "./instructionRegister"
+import { useInstructionRegister } from "./instructionRegister"
 import { useMemoryAddress } from "./memoryAddress"
 import { useProgramCounter } from "./programCounter"
 import { useRAM } from "./ram"
@@ -11,9 +11,9 @@ import { useRAM } from "./ram"
 
 console.clear()
 const { startTicking } = useClock()
-const { setEnable: setProgramCounterEnable } = useProgramCounter()
-const { setEnableIn: setMemoryAddressEnableIn } = useMemoryAddress()
-const { setEnableIn: setInstructionRegisterIn } = useRegistuseInstructionRegister()
+const { setProgramCounterEnable } = useProgramCounter()
+// const { setEnableIn: setMemoryAddressEnableIn } = useMemoryAddress()
+// const { setEnableIn: setInstructionRegisterIn } = useInstructionRegister()
 // const { setValue: setRegisterAValue, setEnableIn: setRegisterAEnableIn } = useRegisterA()
 // const { setValue: setRegisterBValue } = useRegisterB()
 // const { setSumOut } = useAlu()
@@ -38,4 +38,4 @@ useInstructionDecoder()
 
 // alu.sumOut = true
 
-startTicking(1)
+startTicking(0.5)

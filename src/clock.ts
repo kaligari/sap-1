@@ -3,6 +3,7 @@ import { EEvents } from "./events"
 
 let frequency = 100
 let interval = 1
+let halt = false
 
 export const useClock = () => {
     
@@ -14,6 +15,9 @@ export const useClock = () => {
       frequency = hz
       let tickOn = true
       interval = setInterval(() => {
+        if(halt) {
+          clearInterval(interval)
+        }
         if(tickOn) {
           console.log('tick-on')
           eventBus.publish(EEvents.CLOCK_TICK_ON)
@@ -26,8 +30,13 @@ export const useClock = () => {
       }, Math.floor(1 / frequency * 1000 / 2))
     }
 
+    const setClockHalt = (state: boolean) => {
+      halt = state
+    }
+
     return {
-      startTicking
+      startTicking,
+      setClockHalt
     }
     
 }

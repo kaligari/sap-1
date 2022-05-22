@@ -22,16 +22,16 @@ eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
 
 export const useProgramCounter = () => {
     
-    const setEnable = (state: boolean) => {
+    const setProgramCounterEnable = (state: boolean) => {
         enable = state
     }
 
-    const setEnableOut = (state: boolean) => {
+    const setProgramCounterOut = (state: boolean) => {
         enableOut = state
     }
 
     return {
-        setEnable,
-        setEnableOut
+        setProgramCounterEnable,
+        setProgramCounterOut
     }
 }
