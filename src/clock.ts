@@ -1,5 +1,5 @@
 import { eventBus } from "./eventBus"
-import { EEvents } from "./evets"
+import { EEvents } from "./events"
 
 class Clock extends EventTarget {
     #frequency = 100

@@ -1,5 +1,5 @@
 import { eventBus } from "./eventBus";
-import { EEvents } from "./evets";
+import { EEvents } from "./events";
 import { Register } from "./Register";
 import { registerA } from "./registerA";
 import { registerB } from "./registerB";

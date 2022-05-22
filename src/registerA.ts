@@ -1,5 +1,5 @@
 import { eventBus, IPayload } from "./eventBus"
-import { EEvents } from "./evets"
+import { EEvents } from "./events"
 import { Register } from "./Register"
 
 class RegisterA extends Register {
