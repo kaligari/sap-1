@@ -1,35 +1,36 @@
 import { eventBus } from "./eventBus"
 import { EEvents } from "./events"
-import { Register } from "./Register"
+import { useRegister } from "./useRegister"
 
-class ProgramCounter extends Register {
-    enableOut = false
-    enable = false
-    #maxValue
-    // TODO
-    // Counter out
-    // Jump
+const { getValue, setValue } = useRegister()
+let enableOut = false
+let enable = false
+let maxValue = 16
 
-
-    constructor(maxValue = 16) {
-        super()
-        this.#maxValue = maxValue
-        eventBus.subscribe(EEvents.CLOCK_TICK_ON, this.onTick)
-    }
-    
-    onTick = () => {
-        if(this.enable) {
-            this.onEnable()
-        }        
-    }
-
-    onEnable() {
-        this.value = this.value + 1
-        if(this.value >= this.#maxValue) {
-            this.value = 0
+const onTick = () => {
+    if(enable) {
+        setValue(getValue() + 1)
+        if(getValue() >= maxValue) {
+            setValue(0)
         }
-        console.log('program counter', this.value)
-    }
+        console.log('program counter', getValue())
+    }        
 }
 
-export const programCounter = new ProgramCounter()
+eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
+
+export const useProgramCounter = () => {
+    
+    const setEnable = (state: boolean) => {
+        enable = state
+    }
+
+    const setEnableOut = (state: boolean) => {
+        enableOut = state
+    }
+
+    return {
+        setEnable,
+        setEnableOut
+    }
+}

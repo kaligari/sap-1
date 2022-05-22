@@ -1,31 +1,45 @@
 import { eventBus, IPayload } from "./eventBus"
 import { EEvents } from "./events"
-import { Register } from "./Register"
+import { useRegister } from "./useRegister"
 
-class RegisterA extends Register {
-    enableOut = false
-    enableIn = false
-    #valueFromBus: number|null = null
+const { getValue: getBinaryValue, setValue: setBinaryValue } = useRegister()
+let enableOut = false
+let enableIn = false
+let valueFromBus: number|null = null
 
-    constructor() {
-        super()
-        eventBus.subscribe(EEvents.CLOCK_TICK_ON, this.onTick)
-        eventBus.subscribe(EEvents.BUS_UPDATE, this.onBusUpdate)
-    }
-
-    onBusUpdate = (payload?: IPayload) => {
-        this.#valueFromBus = payload?.value || null
-    }
-
-    onTick = () => {
-        if(this.enableIn && this.#valueFromBus !== null) {
-            this.value = this.#valueFromBus
-            this.#valueFromBus = null
-            eventBus.publish(EEvents.REGISTER_A_CHANGE, { value: this.value })
-            console.log('registerA', this.value)
-        }
-    }
-
+const onBusUpdate = (payload?: IPayload) => {
+    valueFromBus = payload?.value || null
 }
 
-export const registerA = new RegisterA()
+const onTick = () => {
+    if(enableIn && valueFromBus !== null) {
+        setBinaryValue(valueFromBus)
+        valueFromBus = null
+        eventBus.publish(EEvents.REGISTER_A_CHANGE, { value: getBinaryValue() })
+        console.log('registerA', getBinaryValue().toString(2).padStart(8, '0'))
+    }
+}
+
+eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
+eventBus.subscribe(EEvents.BUS_UPDATE, onBusUpdate)
+
+export const useRegisterA = () => {
+
+    const setValue = (value: number) => {
+        valueFromBus = value
+    }
+
+    const getValue = (): number => {
+        return getBinaryValue()
+    }
+
+    const setEnableIn = (state: boolean) => {
+        enableIn = state
+    }
+    
+    return {
+        setValue,
+        getValue,
+        setEnableIn
+    }
+}

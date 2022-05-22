@@ -1,20 +1,30 @@
-import { bus } from "./bus"
-import { alu } from "./alu"
-import { clock } from "./clock"
-import { registerA } from "./registerA"
-import { registerB } from "./registerB"
-// import { programCounter } from "./programCounter"
+import { useBus } from "./bus"
+import { useAlu } from "./alu"
+import { useClock } from "./clock"
+// import { useProgramCounter } from "./programCounter"
+import { useRegisterA } from "./registerA"
+import { useRegisterB } from "./registerB"
 
 console.clear()
+const { startTicking } = useClock()
+// const { setEnable: setProgramCounterEnable } = useProgramCounter(16)
+const { setValue: setRegisterAValue, setEnableIn: setRegisterAEnableIn } = useRegisterA()
+const { setValue: setRegisterBValue } = useRegisterB()
+const { setSumOut } = useAlu()
 
-bus
+useBus()
+setRegisterBValue(1)
+setRegisterAValue(4)
+setRegisterAEnableIn(true)
+setSumOut(true)
+// setProgramCounterEnable(true)
+// bus
 // programCounter.enable = true
 
-registerA.value = 4
-registerA.enableIn = true
+// registerA.enableIn = true
 
-registerB.value = 1
+// registerB.value = 1
 
-alu.sumOut = true
+// alu.sumOut = true
 
-clock.startTicking(1)
+startTicking(1)

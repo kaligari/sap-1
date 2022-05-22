@@ -1,20 +1,30 @@
 import { eventBus } from "./eventBus"
 import { EEvents } from "./events"
-import { Register } from "./Register"
+import { useRegister } from "./useRegister"
 
-class RegisterB extends Register {
-    enableOut = false
-    enableIn = false
+const { getValue: getBinaryValue, setValue: setBinaryValue } = useRegister()
+let enableOut = false
+let enableIn = false
 
-    constructor() {
-        super()
-        eventBus.subscribe(EEvents.CLOCK_TICK_ON, this.onTick)
-    }
-    
-    onTick = () => {
-        if(this.enableOut) {
-        }        
-    }
+const onTick = () => {
+    if(enableOut) {
+    }        
 }
 
-export const registerB = new RegisterB()
+eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
+
+export const useRegisterB = () => {
+
+    const setValue = (value: number) => {
+        setBinaryValue(value)
+    }
+
+    const getValue = (): number => {
+        return getBinaryValue()
+    }
+
+    return {
+        setValue,
+        getValue
+    }
+}
