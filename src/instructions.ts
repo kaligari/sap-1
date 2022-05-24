@@ -16,54 +16,57 @@ export const CO = 0b0000000000000100
 export const  J = 0b0000000000000010
 export const IR = 0b0000000000000001
 
-// export const instructions: { [key: string]: number; } = {
-//     '00000000': MI | CO,
-//     '00000001': RO | II | CE,
-
-//     '00010000': MI | CO,
-//     '00010001': RO | II | CE,
-//     '00010010': IO | MI,
-//     '00010011': RO | AI,
-
-//     '00100000': MI | CO,
-//     '00100001': RO | II | CE,
-//     '00100010': IO | MI,
-//     '00100011': RO | BI,
-//     '00100100': EO | AI,
-
-//     '11100000': MI | CO,
-//     '11100001': RO | II | CE,
-//     '11100010': AO | OI,
-
-//     '11110000': MI | CO,
-//     '11110001': RO | II | CE,
-//     '11110010': HT,
-    
-// }
-
-const LDA: number[] = [
-    IO | MI,
-    RO | AI,
-    IR
-]
-const SUM: number[] = [
-    IO | MI,
-    RO | BI,
-    EO | AI,
-    IR
-]
-const OUT: number[] = [
-    IO | MI,
-    AO | OI,
-    IR
-]
-const HLT: number[] = [ HT ]
+const LDA = 0x1
+const SUM = 0x2
+const OUT = 0xE
+const HLT = 0xF
 
 export type TInstruction = { [key: number]: number[]; }
 
 export const instructions: TInstruction = {
-    0x1: LDA,
-    0x2: SUM,
-    0xE: OUT,
-    0xF: HLT
+    [LDA]: [ IO | MI, RO | AI, IR ],
+    [SUM]: [ IO | MI, RO | BI, EO | AI, IR ],
+    [OUT]: [ IO | MI, AO | OI, IR ],
+    [HLT]: [ HT ]
 }
+export type TProgramInstruction = [number, number?] | number
+export type TProgram = TProgramInstruction[]
+export const program: TProgram = [
+    [LDA, 14],
+    [SUM, 15],
+    [OUT, 0],
+    [HLT, 0],
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    28,
+    14,
+]
+
+export const programLineToNumber = (programLine: TProgramInstruction) => {
+    let instruction
+    let operand
+    if(Array.isArray(programLine)) {
+        instruction = (programLine as number[])[0] << 4
+        operand = (programLine as number[])[1] || 0
+    } else {
+        instruction = 0
+        operand = programLine as number
+    }
+    return instruction | operand
+}
+
+export const programInMachineCode = program.forEach(item => programLineToNumber(item))
+
+const programInMemory = program.reduce((prev, byte, idx) => {
+    return prev.concat(`${idx.toHexFormat(1)}: ${programLineToNumber(byte).toHexFormat()}\n`)
+}, '')
+
+console.log(`program in memory:\n\n${programInMemory}`);

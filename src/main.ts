@@ -10,7 +10,7 @@ import { useRAM } from "./ram"
 import { useRegisterA } from "./registerA"
 import { useRegisterB } from "./registerB"
 
-console.clear()
+// console.clear()
 
 const { startTicking } = useClock()
 
