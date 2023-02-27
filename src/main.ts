@@ -1,20 +1,27 @@
-import { bus } from "./bus"
-import { alu } from "./alu"
-import { clock } from "./clock"
-import { registerA } from "./registerA"
-import { registerB } from "./registerB"
-// import { programCounter } from "./programCounter"
+import "./number.extensions"
+import { useBus } from "./bus"
+import { useAlu } from "./alu"
+import { useClock } from "./clock"
+import { useInstructionDecoder } from "./instructionDecoder"
+import { useInstructionRegister } from "./instructionRegister"
+import { useMemoryAddress } from "./memoryAddress"
+import { useProgramCounter } from "./programCounter"
+import { useRAM } from "./ram"
+import { useRegisterA } from "./registerA"
+import { useRegisterB } from "./registerB"
 
-console.clear()
+// console.clear()
 
-bus
-// programCounter.enable = true
+const { startTicking } = useClock()
 
-registerA.value = 4
-registerA.enableIn = true
+useInstructionDecoder()
+useBus()
+useAlu()
+useRAM()
+useInstructionRegister()
+useMemoryAddress()
+useProgramCounter()
+useRegisterA()
+useRegisterB()
 
-registerB.value = 1
-
-alu.sumOut = true
-
-clock.startTicking(1)
+startTicking(100)

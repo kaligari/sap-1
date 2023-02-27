@@ -1,37 +1,46 @@
 import { eventBus } from "./eventBus"
 import { EEvents } from "./events"
 
-class Clock extends EventTarget {
-    #frequency = 100
-    #interval = 1
-  
-    constructor() {
-      super()
-    }
+let frequency = 100
+let interval = 1
+let halt = false
 
-    startTicking(hz: number) {
-      clearInterval(this.#interval)
+export const useClock = () => {
+    
+    const startTicking = (hz: number) => {
+      clearInterval(interval)
       if(hz < 0) {
         throw Error('Invalid clock frequency')
       }
-      this.#frequency = hz
+      frequency = hz
       let tickOn = true
-    //   let event
-      this.#interval = setInterval(() => {
+      console.time()
+      interval = setInterval(() => {
+        if(halt) {
+          clearInterval(interval)
+          console.log('HLT')
+          console.timeEnd()
+          
+        }
         if(tickOn) {
-          console.log('tick-on')
+          // console.log('tick-on')
           eventBus.publish(EEvents.CLOCK_TICK_ON)
-        //   event = new CustomEvent('clock-tick-on')
         } else {
           // console.log('tick-off')
           eventBus.publish(EEvents.CLOCK_TICK_OFF)
-        //   event = new CustomEvent('clock-tick-off')
         }
         // this.dispatchEvent(event)
         tickOn = !tickOn
-      }, Math.floor(1 / this.#frequency * 1000 / 2))
+      }, Math.floor(1 / frequency * 1000 / 2))
+    }
+
+    const setClockHalt = (state: boolean) => {
+      halt = state
+    }
+
+    return {
+      startTicking,
+      setClockHalt
     }
     
-  }
-  
-export const clock = new Clock()
+}

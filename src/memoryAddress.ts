@@ -1,25 +1,25 @@
-import { useBus } from "./bus"
 import { eventBus } from "./eventBus"
 import { EEvents } from "./events"
 import { useRegister } from "./useRegister"
+import { useBus } from "./bus"
 
 const { getValue: getBinaryValue, setValue: setBinaryValue } = useRegister()
-let enableIn = false
+let memoryIn = false
 
 const { value: valueFromBus } = useBus()
 
 const onTick = () => {
-    if(enableIn) {
+    if(memoryIn) {
         setTimeout(() => {
             setBinaryValue(valueFromBus())
-            console.log('BI', getBinaryValue().toBinaryFormat())
+            console.log('MI', getBinaryValue().toBinaryFormat(4)); 
         })
-    }      
+    }
 }
 
 eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
 
-export const useRegisterB = () => {
+export const useMemoryAddress = () => {
 
     const setValue = (value: number) => {
         setBinaryValue(value)
@@ -29,13 +29,13 @@ export const useRegisterB = () => {
         return getBinaryValue()
     }
 
-    const setRegisterBIn = (state: boolean) => {
-        enableIn = state
+    const setMemoryIn = (state: boolean) => {
+        memoryIn = state
     }
 
     return {
         setValue,
         getValue,
-        setRegisterBIn
+        setMemoryIn
     }
 }

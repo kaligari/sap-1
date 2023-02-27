@@ -1,21 +1,13 @@
-import { eventBus, IPayload } from "./eventBus";
-import { EEvents } from "./events";
-import { Register } from "./Register";
+let value = 0
 
-class Bus extends Register {
+export const useBus = () => {
     
-    constructor() {
-        super()
-        this.value = 0
-        eventBus.subscribe(EEvents.ALUS_SUM_OUT, this.onBusUpdate)
+    const setValue = (payload: number) => {
+        value = payload
     }
 
-    onBusUpdate = (payload?: IPayload) => {
-        if(payload?.value) {
-            this.value = payload?.value
-            eventBus.publish(EEvents.BUS_UPDATE, { value: this.value })
-        }
+    return {
+        setValue,
+        value: () => value
     }
 }
-
-export const bus = new Bus()

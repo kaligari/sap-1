@@ -10,16 +10,14 @@ const { value: valueFromBus } = useBus()
 
 const onTick = () => {
     if(enableIn) {
-        setTimeout(() => {
-            setBinaryValue(valueFromBus())
-            console.log('BI', getBinaryValue().toBinaryFormat())
-        })
-    }      
+        setBinaryValue(valueFromBus())
+        console.log('--- OI RESULT ---: ', getBinaryValue()); 
+    }
 }
 
 eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
 
-export const useRegisterB = () => {
+export const useOutputRegister = () => {
 
     const setValue = (value: number) => {
         setBinaryValue(value)
@@ -29,13 +27,13 @@ export const useRegisterB = () => {
         return getBinaryValue()
     }
 
-    const setRegisterBIn = (state: boolean) => {
+    const setOutputRegisterIn = (state: boolean) => {
         enableIn = state
     }
 
     return {
         setValue,
         getValue,
-        setRegisterBIn
+        setOutputRegisterIn
     }
 }

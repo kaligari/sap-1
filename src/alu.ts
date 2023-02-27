@@ -1,34 +1,33 @@
 import { eventBus } from "./eventBus";
 import { EEvents } from "./events";
-import { Register } from "./Register";
-import { registerA } from "./registerA";
-import { registerB } from "./registerB";
+import { useRegister } from "./useRegister";
+import { useRegisterA } from "./registerA";
+import { useRegisterB } from "./registerB";
+import { useBus } from "./bus";
 
-class ALU extends Register {
-    #sumOut = false
+const { getValue, setValue } = useRegister()
+const { getValue: getRegisterAValue } = useRegisterA()
+const { getValue: getRegisterBValue } = useRegisterB()
+const { setValue: setValueToBus } = useBus()
+let sumOut = false
 
-    constructor() {
-        super()
-        this.sumRegisters()
-        eventBus.subscribe(EEvents.REGISTER_A_CHANGE, this.sumRegisters)
-        eventBus.subscribe(EEvents.REGISTER_B_CHANGE, this.sumRegisters)
-    }
-
-    get sumOut() {
-        return this.#sumOut
-    }
-
-    set sumOut(value) {
-        this.#sumOut = value
-        this.sumRegisters()
-    }
-    
-    sumRegisters = () => {
-        this.value = registerA.value + registerB.value
-        if(this.#sumOut) {            
-            eventBus.publish(EEvents.ALUS_SUM_OUT, { value: this.value })
-        }
+const onTick = () => {
+    if(sumOut) {            
+        setValue(getRegisterAValue() + getRegisterBValue())
+        setValueToBus(getValue())
+        console.log('EO', getValue().toBinaryFormat(8));
     }
 }
 
-export const alu = new ALU()
+eventBus.subscribe(EEvents.CLOCK_TICK_ON, onTick)
+
+export const useAlu = () => {
+
+    const setSumOut = (state: boolean) => {
+        sumOut = state
+    }
+
+    return {
+        setSumOut
+    }
+}
